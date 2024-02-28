@@ -107,7 +107,6 @@ userSchema.methods.generateToken = async function (cb) {
     var token = jwt.sign(user._id.toHexString(), 'secretToken');
     // user._id(db의 _id) + secreToken = token
     // token으로 user를 판별할 수 있다.
-    // user.token = token;
     user.token = token;
 
     try {
