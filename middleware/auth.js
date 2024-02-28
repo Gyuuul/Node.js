@@ -1,8 +1,8 @@
+// 인증 처리를 하는 곳
+
 const { User }= require("../models/User")
 
 let auth = (req, res, next)=> {
-
-    // 인증 처리를 하는 곳
 
     // client 쿠키에서 토큰을 가져온다.
     let token= req.cookies.x_auth;
@@ -17,9 +17,7 @@ let auth = (req, res, next)=> {
     })
 
     // 유저가 있으면 인증 ok
-
     // 유저가 없으면 인증 no
-
 }
 
 module.exports = { auth };
