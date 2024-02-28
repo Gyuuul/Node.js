@@ -55,7 +55,6 @@ app.post('/api/users/login', async(req, res)=> {
 
         // 요청된 이메일이 있다면, 비번이 맞는지 확인
         // comparePassword 메서드는 usermodel에서 만들어줌
-        // isMatch는 비번이 맞을 때 가져옴
         const isMatch= await user.comparePassword(req.body.password);
         if(!isMatch){
             return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다." }) 
