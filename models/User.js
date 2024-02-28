@@ -98,25 +98,42 @@ userSchema.methods.comparePassword = function (plainPassword) {
     // plainpassword와 db에 암호화된 비밀번호가 같은지 확인
     const result = bcrypt.compare(plainPassword, this.password);
     return result;
-  };
-  
-  
-  userSchema.methods.generateToken = async function (cb) {
+    };
+    
+    
+userSchema.methods.generateToken = async function (cb) {
     var user = this;
     // jsonwebtoken을 이용해서 token을 생성하기
-    var token = jwt.sign(user._id.toHexString(), "secretToken");
+    var token = jwt.sign(user._id.toHexString(), 'secretToken');
     // user._id(db의 _id) + secreToken = token
     // token으로 user를 판별할 수 있다.
     // user.token = token;
     user.token = token;
-  
+
     try {
-      const savedUser = await user.save();
-      return user;
+    const savedUser = await user.save();
+    return user;
     } catch (err) {
-      return err;
+    return err;
     }
-  };
+};
+
+userSchema.statics.findByToken= function(token, cb){
+    var user= this;
+
+    //토큰 디코드
+    jwt.verify(token,'secretToken', function(err, decoded){
+        //유저 아이디를 이용하여 유저를 찾은 후
+        // 클라이언트에서 가져온 token과 DB에 보관된 TOKEN이 일치하는지 확인
+        user.findOne({"_id": decoded, "token": token})
+        .then((user)=>{
+            cb(null, user);
+        })
+        .catch((err)=>{
+            return cb(err);
+        })
+    })
+}
 
 
 // model로 schema 감싸줌
