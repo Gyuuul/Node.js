@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended : true}))
 // json 타입을 분석해서 가져올 수 있도록 해줌
 app.use(bodyParser.json())
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 const mongoose= require('mongoose')
 mongoose.connect(config.mongoURI, {
@@ -91,17 +91,40 @@ app.post('/api/users/login', async(req, res)=> {
 
 app.get('/api/users/auth', auth ,(req,res)=>{
     //여기까지 미들웨어를 통과해 왔다는 얘기는 Auth가 true라는 말
-    req.status(200).json({
+    res.status(200).json({
         _id: req.user._id,
-        // 유저가 관리자인지 그냥 유저인지 확인하는 정보
         isAdmin: req.user.role === 0 ? false : true,
-        isAuth: true,
+        isAuth:true,
         email: req.user.email,
         name: req.user.name,
         lastname: req.user.lastname,
         role: req.user.role,
-        imagae: req.user.image
+        image: req.user.image
     })
+})
+
+// app.get('/api/users/logout', auth, (req,res)=>{
+//     // Usermodel에서 id를 찾고 token을 지워줌
+//     User.findOneAndUpdate({ _id: req.user._id }, { token: "" }) 
+//     console.log(req.user._id)
+//     console.log(req.user.token)
+//     try{
+//         res.status(200).send({ success: true })
+//     }
+//     catch(err){
+//         res.json({ success: false, err });
+//     }
+// })
+app.get('/api/users/logout', auth, (req, res) => {
+    
+    User.findOneAndUpdate({ _id: req.user._id }, { token: "" })
+       .then(() => {
+        console.log(req.user._id);
+        res.status(200).send({success: true})
+      })
+      .catch((err)=>{
+        res.json({ success: false, err });
+      })
 })
 
 // app이 5000포트에 listen을 하면 consoel 출력
