@@ -21,6 +21,11 @@ mongoose.connect(config.mongoURI, {
     console.log('Mongo DB Connect')
 }).catch((error)=> console.log(error))
 
+
+// axios 테스트
+app.get('/api/hello', (req, res)=>{
+    res.send('안녕하세용')
+})
 // root 디렉터리에 오면 hello world 출력
 app.get('/', (req, res)=> res.send("Hello World~~~ gyul"))
 
