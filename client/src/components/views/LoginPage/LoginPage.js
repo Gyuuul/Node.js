@@ -1,11 +1,13 @@
-import axios from 'axios';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
+import { loginUser } from '../../../_actions/user_action';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
     const [email, setEmail]= useState('');
     const [password, setPassword]= useState('');
     const dispatch= useDispatch();
+    const navigate= useNavigate();
 
     const hadleSubmit= async(e)=>{
         e.preventDefault();
@@ -16,15 +18,14 @@ export default function LoginPage() {
             password: password,
         }
 
-        try{
-            const res= await axios.post('/api/users/login', user);
-
-            dispatch(loginUser(user))
-        }
-        catch(error){
-            console.error(error);
-        }
-
+        dispatch(loginUser(user))
+        .then(response=> {
+            if(response.payload.loginSuccess){
+                navigate('/');
+            }else{
+                alert('Error')
+            }
+        })
     }
 
     return (
