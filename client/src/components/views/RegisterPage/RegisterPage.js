@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../../_actions/user_action';
+import Auth from '../../../hoc/auth';
 
 export default function RegisterPage() {
   const [name, setName]= useState('');
@@ -65,3 +66,4 @@ export default function RegisterPage() {
     </div>
   )
 }
+
