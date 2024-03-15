@@ -18,6 +18,7 @@ export default function route() {
                     <Route path="/" element={ <AuthLandingPage /> } />
                     <Route path="/login" element={ <AuthLoginPage /> }/>
                     <Route path="/register" element={ <AuthRegisterPage /> } />
+                    {/* <Route path="/chat" element={ <Chat /> } /> */}
                 </Routes>
             </Router>
         </>
