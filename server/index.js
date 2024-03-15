@@ -77,21 +77,6 @@ app.post('/api/users/login', async(req, res)=> {
     }
 })
 
-    // 비번이 맞다면, 토큰 생성
-    //generateToken 메서드 또한 usermodel에서 생성
-//     user.generateToken((err, user)=> {
-//         if(err) return res.status(400).send(err)
-
-//         // 토큰을 저장한다. 어디에? 쿠키, 로컬스토리지 등
-//         // 쿠키에 x_auth라는 이름으로 유저의 token 저장
-//         res.cookie("x_auth",user.token)
-//         .status(200)
-//         .json({loginSuccess:true, userId: user._id})
-//     })
-//     })
-
-//     })
-// })
 
 app.get('/api/users/auth', auth ,(req,res)=>{
     //여기까지 미들웨어를 통과해 왔다는 얘기는 Auth가 true라는 말
@@ -107,28 +92,17 @@ app.get('/api/users/auth', auth ,(req,res)=>{
     })
 })
 
-// app.get('/api/users/logout', auth, (req,res)=>{
-//     // Usermodel에서 id를 찾고 token을 지워줌
-//     User.findOneAndUpdate({ _id: req.user._id }, { token: "" }) 
-//     console.log(req.user._id)
-//     console.log(req.user.token)
-//     try{
-//         res.status(200).send({ success: true })
-//     }
-//     catch(err){
-//         res.json({ success: false, err });
-//     }
-// })
+
 app.get('/api/users/logout', auth, (req, res) => {
     
     User.findOneAndUpdate({ _id: req.user._id }, { token: "" })
-       .then(() => {
-        console.log(req.user._id);
-        res.status(200).send({success: true})
-      })
-      .catch((err)=>{
-        res.json({ success: false, err });
-      })
+        .then(() => {
+            console.log(req.user._id);
+            res.status(200).send({success: true})
+        })
+        .catch((err)=>{
+            res.json({ success: false, err });
+        })
 })
 
 // app이 5000포트에 listen을 하면 consoel 출력
